@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<head>
+<link href='https://fonts.googleapis.com/css?family=Oswald:700' rel='stylesheet' type='text/css'>
+<style>
+	h1 {
+		font-family: 'Oswald', sans-serif;
+		font-size: 48px;
+	}
+</style>
+<script>
+	var context;
+	var x =100;
+	var y =200;
+	//direction changed to left up making dx and dy -ve
+	var dx=-5;
+	var dy=-5;
+	var color="#0000ff";
+	function init()
+	{
+		context = myCanvas.getContext('2d');
+		setInterval(draw,10);
+	}
+	function draw()
+	{	
+		context.clearRect(0,0,300,300);
+		context.beginPath();
+		context.fillStyle = color;
+		//Draws a circle of radius 20 at the coordinates 100, 200 on the canvas
+		context.arc(x,y,20,0,Math.PI*2,true);
+		context.closePath();
+		context.fill();
+		if( x<=0 || x>=300) {
+			dx=-dx; 
+			color = "ff0000";
+			document.body.style.backgroundColor = "lightBlue";
+			document.getElementById("myCanvas").style.backgroundColor="White";
+		}
+		if( y<=0 || y>=300) {
+			dy=-dy;
+			color = "0000ff";
+			document.body.style.backgroundColor = "brown";
+			document.getElementById("myCanvas").style.backgroundColor="White";
+		} 
+		//var z = dx+dy;
+		//if( z == 0)  color = "0000ff";
+		//if(z >0 ||z<0) color = "ff0000";
+		x+=dx;
+		y+=dy;
+	}
+</script>
+</head>
+<body onLoad="init();">
+	<p>
+	<center><canvas id = "myCanvas" width="300" height="300">
+	</canvas></center>
+	</p>
+	<p>
+	<center>
+	<pre>
+	
+	
+	
+	
+	
+	
+	
+	<h1>NEVER SETTLE</h1>
+	</pre>
+	</center>
+	</p>
+	<footer>
+	<center>
+	<p>- Ananth
+	</p>
+	</center>
+	</footer>
+</body>
+
+</html>
