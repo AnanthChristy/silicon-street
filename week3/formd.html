@@ -28,11 +28,11 @@ function addData() {
             //Insert the user entered details into the cars table, note the use of the ? placeholder, these will replaced by the data passed in as an array as the second parameter
             mydb.transaction(function (t) {
                 t.executeSql("INSERT INTO users (fname, lname) VALUES (?, ?)", [fname, lname]);
-                alert("Data inserted");
+                alert("Data inserted and saved");
                 outputUsers();
             });
         } else {
-            alert("You must enter a make and model!");
+            alert("You must enter a first and last name!");
         }
     } else {
         alert("db not found, your browser does not support web sql!");
