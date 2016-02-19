@@ -1,0 +1,26 @@
+{
+  "name": "week4",
+  "version": "1.0.0",
+  "description": "anything can happen",
+  "main": "testserver.js",
+  "dependencies": {
+    "websocket": "^1.0.22"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "silicon-street"
+  },
+  "keywords": [
+    "test"
+  ],
+  "scripts": {
+    "start": "node testserver.js"
+  },
+  
+  "author": "ananth-christy",
+  "license": "ISC"
+}
