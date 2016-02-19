@@ -17,9 +17,6 @@
   "keywords": [
     "test"
   ],
-  "scripts": {
-    "start": "node testserver.js"
-  },
   
   "author": "ananth-christy",
   "license": "ISC"
