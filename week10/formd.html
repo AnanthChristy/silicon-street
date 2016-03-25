@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script>
+//Test for browser compatibility
+if (window.openDatabase) {
+    //Create the database the parameters are 1. the database name 2.version number 3. a description 4. the size of the database (in bytes) 1024 x 1024 = 1MB
+    var mydb = openDatabase("mans_db", "0.1", "Test Database", 1024 * 1024);
+    //create the cars table using SQL for the database using a transaction
+    mydb.transaction(function (t) {
+        t.executeSql("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY ASC, fname TEXT, lname TEXT)");
+    });
+
+
+} else {
+    alert("WebSQL is not supported by your browser!");
+}
+
+function addData() {
+    //check to ensure the mydb object has been created
+    if (mydb) {
+        //get the values of the make and model text inputs
+        var fname = document.getElementById("firstname").value;
+        var lname = document.getElementById("lastname").value;
+
+        //Test to ensure that the user has entered both a make and model
+        if (fname !== "" && lname !== "") {
+            //Insert the user entered details into the cars table, note the use of the ? placeholder, these will replaced by the data passed in as an array as the second parameter
+            mydb.transaction(function (t) {
+                t.executeSql("INSERT INTO users (fname, lname) VALUES (?, ?)", [fname, lname]);
+                alert("Data inserted and saved");
+                outputUsers();
+            });
+        } else {
+            alert("You must enter a first and last name!");
+        }
+    } else {
+        alert("db not found, your browser does not support web sql!");
+    }
+    return false;
+}
+
+function outputUsers() {
+    //check to ensure the mydb object has been created
+    if (mydb) {
+        //Get all the cars from the database with a select statement, set outputCarList as the callback function for the executeSql command
+        mydb.transaction(function (t) {
+        alert("Selecting data from db");
+            t.executeSql("SELECT * FROM users", [], updateUserList);
+        });
+    } else {
+        alert("db not found, your browser does not support web sql!");
+    }
+}
+
+function updateUserList(transaction, results) {
+    //initialise the listitems variable
+    var listitems = "";
+    //get the car list holder ul
+    var listholder = document.getElementById("userlist");
+    alert("Fetching data..");
+
+    //clear cars list ul
+    listholder.innerHTML = "";
+
+    var i;
+    //Iterate through the results
+    for (i = 0; i < results.rows.length; i++) {
+        //Get the current row
+        var row = results.rows.item(i);
+
+        listholder.innerHTML += "<li>" + row.fname + " - " + row.lname + " (<a href='javascript:void(0);' onclick='deleteUser(" + row.id + ");'>Delete User</a>)";
+    }
+
+}
+
+function deleteUser(id) {
+    //check to ensure the mydb object has been created
+    if (mydb) {
+        //Get all the cars from the database with a select statement, set outputCarList as the callback function for the executeSql command
+        mydb.transaction(function (t) {
+            t.executeSql("DELETE FROM users WHERE id=?", [id], outputUsers);
+        });
+    } else {
+        alert("db not found, your browser does not support web sql!");
+    }
+}
+</script>
+</head>
+<body>
+<div class="container" >
+<div class="form-horizontal" role="form" style="width:720px;height:800px;padding:2px; border:3px solid black;margin: 0 auto;background-color:black;color:white;">
+<FORM name="anform" onsubmit="return addData()" METHOD="POST">
+	<div class="col-sm-12">
+		<div class="col-xs-6">
+			<label class="col-xs-4 ">Firstname:*</label>
+			<div class="col-sm-8">
+				<input type ="text" class="form-control" id="firstname" size="15"  required></br>
+			</div>
+			<label class="col-xs-4 ">Lastname:*</label>
+			<div class="col-sm-8">
+				<input type ="text" class="form-control" id="lastname" size="15" required></br>
+			</div>
+			<label class="col-xs-4 ">Email:*</label>
+			<div class="col-sm-8">
+				<input type ="email" class="form-control" id="email" size="30" required></br>
+			</div>
+			<label class="col-xs-4 ">Password:</label>
+			<div class="col-sm-8">
+				<input type ="password" class="form-control" id="passwrd"  size="15">
+			</div>
+		</div>
+		<div class="col-xs-6">
+			<label class="col-xs-4 ">Company:*</label>
+			<div class="col-sm-8">
+				<input type ="text" class="form-control" id="company" size="15"  required></br>
+			</div>
+			<label class="col-xs-4 ">Website:*</label>
+			<div class="col-sm-8">
+				<input type ="url" class="form-control" id="website" size="30"  required></br>
+			</div>
+			<label class="col-xs-4 ">Position:*</label>
+			<div class="col-sm-8">
+				<select id="pos" class="form-control" >
+				<option value="default">--SELECT ONE</option>
+				<option value="Manager">Manager</option>
+				<option value="CEO">CEO</option>
+				<option value="Employee">Employee</option>
+			</select></br>
+			</div>
+			<label class="col-xs-4 ">Phone:</label>
+			<div class="col-sm-8">
+				<input type ="tel" class="form-control" id="phone" size="15" required>
+			</div>
+		</div>
+	</div> 
+
+<p>* Setting a password will allow you to log back in and see our documents any time.</p>
+<p>-------------------------------------------------------------------------------------------------------------------------</p>
+<p><b>PRIMARY service or product of Interest:*</b></p>
+<div class="col-xs-3">
+<select name="prod" class="form-control">
+			<option value="default">--SELECT ONE</option>
+			<option value="Oracle">Oracle</option>
+			<option value="Google App Engine">Google App Engine</option>
+			<option value="AWS">AWS</option>
+			<option value="Heroku">Heroku</option>
+		</select>
+		</div><br/><br/>
+<p><b>OTHER services or product of Interest:</b></p>
+	<input type="checkbox" name="OnlineStrat" value="Online Strategy">Online Strategy</br>    
+	<input type="checkbox" name="WebDesign" value="Web Design and Development">Web Design and Development</br>
+	<input type="checkbox" name="SocialNet" value="Social Networking and Online Community">Social Networking and Online Community</br>
+	<input type="checkbox" name="IntegOnCampaign" value="Integrated Online Campaigns">Integrated Online Campaigns</br>
+	<input type="checkbox" name="EmailMarket" value="Email Marketing Services">Email Marketing Services(Strategy,Design,Development)</br>
+	<input type="checkbox" name="EmailMarkSoft" value="Email Marketing Software">Email Marketing Software</br>
+<p>-------------------------------------------------------------------------------------------------------------------------</p>
+<p>When are you looking to implement a solution?*</p>
+<div class="col-xs-4">
+<input type="date" name="date" class="form-control">
+</div>
+<br/><br/>
+<p>-------------------------------------------------------------------------------------------------------------------------</p>
+<p><b> Yes! Subscribe to Mailing List</b></p>
+<p><input type="checkbox" name="confirm" value="Receive feature">Receive feature and best practice articles on email marketing, interactive design and online strategy.</p>
+<p><input type="submit" class="btn btn-default" value="SAVE"></p>
+</FORM>
+</div>
+</div>
+<center><div id="userlistholder">
+     <h3>User Details from the Database</h3>
+
+    <ul id="userlist"></ul>
+</div></center>
+</body>
+</html>
