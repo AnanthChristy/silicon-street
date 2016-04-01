@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<p>Click button to display messpages</p>
+<button type="button" onclick="main()">Button</button>
+<!-- 
+<p id="demo"></p>
+<p id="demo1"></p>
+<p id="demo2"></p>
+ -->
+ <p id="demo1"></p>
+<p id="demo2"></p>
+<p id="demo3"></p>
+<p id="demo4"></p>
+<p id="demo5"></p>
+<p id="demo6"></p>
+<p id="demo7"></p>
+<p id="demo8"></p>
+<p id="demo9"></p>
+
+<script>
+function Square(side1) { 
+	/////////////////////////
+  // Helping function
+  /////////////////////////
+	var square = function (i){
+	return (i * i);
+	}
+	/////////////////////////
+  // Constructor
+  /////////////////////////
+	var side = side1;
+	// Access function
+  /////////////////////////
+	this.getSide = function () {
+		return (side);
+	}
+	this.setSide = function (side1) {
+	this.side = side1;
+	}
+	
+	this.isLarge = function (side1){
+	return side1 > 10;
+	}
+	//Implementor function
+	this.enLarge = function(ds1){
+		var ds = ds1;
+		return (size + ds1);
+	}
+	this.area = function(){
+	return (square(side1));
+	}
+	this.perimeter = function(side1){
+		return (4 * side1);
+	}
+}
+
+function Circle(radius1){ 
+//Helping function
+	var pi = function(){
+		return (3.1416);
+	}
+//Constructor
+	var radius = radius1;
+//Access function
+	this.getRadius = function () {
+		return (radius);
+	}
+	this.setRadius = function (radius1) {
+		this.radius = radius1;
+	}
+	this.isLarge = function (radius1){
+		return radius1 > 10;
+	}
+//Implementor function
+	this.enLarge = function(dr){
+		return radius + dr;
+	}
+	this.area = function(){
+	return (pi() * radius1 * radius1);
+	}
+	this.circumference = function(){
+		return (2 * pi() * radius1);
+	}
+}
+function Coin(circleObj1, squareObj1){ //Coin Class
+//Helping function
+	var getCircleArea = function(){
+		return (circleObj1.area());
+	}
+	var getSquareArea = function(){
+		return (squareObj1.area());
+	}
+	//Constructor
+	var circleObj = circleObj1;
+	var squareObj = squareObj1;
+	//Access function
+	this.getSquareObj = function () {
+	return (squareObj1);
+	}
+	this.setSquareObj = function (squareObj1) {
+	this.squareObj = squareObj1;
+	}
+	this.getCircleObj = function () {
+		return(circleObj);
+	}
+	this.setCircleObj = function (circleObj1) {
+	this.circleObj = circleObj1;
+	}
+	this.isNormal = function (){
+		return getCircleArea() > getSquareArea();
+	}
+	//Implementor function
+	this.coinArea = function(){
+	return (getCircleArea() - getSquareArea());
+	}
+}
+function AncientCoin (circleObj1, squareObj1, age1){ //Ancient Coin Class
+	//Helping function
+	var trace= function(s) {
+	alert(s);
+	}
+
+	//Constructor
+	var age = age1;
+	Coin.call(this, circleObj1, squareObj1);
+	//Access function
+	this.getAge = function () {
+		return age;
+	}
+	this.setAge = function (age1) {
+	this.age = age1;
+	}
+	this.isOld = function (){
+		return age1 > 1000;
+	}
+	//Implementor function
+	var coinObj = new Coin(circleObj1, squareObj1);
+	this.ancoinArea = function() {
+		return coinObj.coinArea();
+	}
+	this.melt = function(age1){
+		return age=0;
+	}
+}
+
+
+
+function main() {
+	
+	var sq = new Square(2);
+	var cir = new Circle(4.0);
+	var coin = new Coin(cir, sq);
+	var ancoinObj = new AncientCoin(cir, sq, 2000);
+	document.getElementById("demo1").innerHTML = "For the following values below - ";
+	document.getElementById("demo2").innerHTML = "Side: " + sq.getSide();
+	document.getElementById("demo3").innerHTML = "Radius: " + cir.getRadius();
+	document.getElementById("demo4").innerHTML = "Age: " + ancoinObj.getAge();
+	document.getElementById("demo5").innerHTML = "Area of Coin Object: " + coin.coinArea();
+	if (coin.isNormal() == true) {
+		document.getElementById("demo6").innerHTML = ("Coin Object isNormal");
+	}
+	else {
+		document.getElementById("demo7").innerHTML = ("Coin Object is NOT Normal");
+	}
+	if (ancoinObj.isOld() == true) {
+		document.getElementById("demo8").innerHTML = ("Coin Object isOld");
+	}
+	else {
+		document.getElementById("demo9").innerHTML = ("Coin Object is NOT Old");
+	}
+}
+</script>
+
+</body>
+</html>
